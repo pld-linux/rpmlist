@@ -241,8 +241,9 @@ class Pyldek:
 			for sug in pkg.suggests:
 				html += str(sug) + '\n'
 			html += '</pre><hr/>Files: <pre>'
-			for (filename, filesize, filemode) in pkg.files:
-				html += filename + '\n'
+			if pkg.files:
+				for (filename, filesize, filemode) in pkg.files:
+					html += filename + '\n'
 #			html += '</pre><hr/>Changelog:<br/><pre>\n'
 #			try:
 #				html += h[rpm.RPMTAG_CHANGELOGTEXT][0]
