@@ -1,5 +1,5 @@
-%define		rpmlist_rev 1.1
-Summary:	RPM viewer
+%define		rpmlist_rev 1.2
+Summary:	RPM browser
 Summary(pl.UTF-8):Przeglądarka RPM-ów
 Name:		rpmlist
 Version:	%{rpmlist_rev}
