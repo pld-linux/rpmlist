@@ -14,18 +14,19 @@ index_html = '''<html><head><title>RPM View</title></head><frameset cols="20%,80
 rpm_pattern = re.compile('^(.*)-(.*)-(.*)\.(.*)$')
 poldek_pattern = re.compile('(.*);')
 
+def uniq(x):
+	global previous
+	(gr, napis, typ) = x
+	res = (napis != previous)
+	previous = napis
+	return res
+
 def sort_and_uniq():
 	"Sorts packages and remove duplicates."
-	global pakiety
+	global pakiety, previous
 	pakiety.sort(key = operator.itemgetter(1))
-	liczba = len(pakiety)
-	lista = []
-	for i in xrange(liczba - 2):
-		(pkg, napis, typ) = pakiety[i]
-		(pkg_next, napis_next, typ_next) = pakiety[i + 1]
-		if (napis != napis_next):
-			lista.append((pkg, napis, typ))
-	pakiety = lista
+	previous = ''
+	pakiety = filter(uniq, pakiety)
 
 def show_groups():
 	"Show groups."
