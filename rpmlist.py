@@ -2,7 +2,7 @@
 # vim:fileencoding=UTF-8
 # $Revision$, $Date$
 
-import BaseHTTPServer, cgi, datetime, locale, os, poldek, re, rpm, sys, urllib
+import BaseHTTPServer, cgi, datetime, locale, operator, os, poldek, re, rpm, sys, urllib
 
 TYP_RPM = 0
 TYP_POLDEK = 1
@@ -14,23 +14,10 @@ index_html = '''<html><head><title>RPM View</title></head><frameset cols="20%,80
 rpm_pattern = re.compile('^(.*)-(.*)-(.*)\.(.*)$')
 poldek_pattern = re.compile('(.*);')
 
-def compare(a, b):
-	"Compare two packages by name."
-	global TYP_RPM
-	(pak1, napis1, typ1) = a
-	(pak2, napis2, typ2) = b
-	w = cmp(napis1, napis2)
-	if w == 0:
-		if typ1 == TYP_RPM:
-			return 1
-		else:
-			return -1
-	return w
-
 def sort_and_uniq():
 	"Sorts packages and remove duplicates."
 	global pakiety
-	pakiety.sort(compare)
+	pakiety.sort(key = operator.itemgetter(1))
 	liczba = len(pakiety)
 	lista = []
 	for i in xrange(liczba - 2):
@@ -169,7 +156,7 @@ class RPM_package:
 			return html
 		return False
 
-class Pyldek:
+class Poldek_package:
 	"Contains methods related to poldek's packages."
 	def __init__(self):
 		ctx = poldek.poldek_ctx()
@@ -193,6 +180,9 @@ class Pyldek:
 		packages = self.return_packages()
 		for pkg in packages:
 			gr = pkg.group
+			# case when there is no poldek's package
+			if not gr:
+				break
 			napis = "%s-%s-%s.%s" % (pkg.name, pkg.ver, pkg.rel, pkg.arch())
 			if grupy.has_key(gr):
 				grupy[gr] += 1
@@ -309,7 +299,7 @@ if __name__ == '__main__':
 	content_type = 'text/html; charset=%s' % locale.nl_langinfo(locale.CODESET)
 	pak = RPM_package()
 	poldek.lib_init()
-	pyl = Pyldek()
+	pyl = Poldek_package()
 	load_packages()
 
 	if len(sys.argv) > 1:
