@@ -1,4 +1,4 @@
-%define		rpmlist_rev 1.3
+%define		rpmlist_rev 1.4
 Summary:	RPM browser
 Summary(pl.UTF-8):Przeglądarka RPM-ów
 Name:		rpmlist
