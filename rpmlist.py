@@ -63,7 +63,9 @@ def load_packages():
 	global grupy, pakiety, pak, pyl
 	grupy = {}
 	pakiety = []
+	sys.stderr.write('Reading RPM database\n')
 	pak.load_packages()
+	sys.stderr.write('Reading Poldek database\n')
 	pyl.load_packages()
 	sort_and_uniq()
 
@@ -123,6 +125,7 @@ class RPM_package:
 			if h[rpm.RPMTAG_EPOCH]:
 				html += 'Epoch: %d<br/>\n' % (h[rpm.RPMTAG_EPOCH])
 			html += 'Group: ' + h[rpm.RPMTAG_GROUP] + '<br/>\n'
+			html += 'License: ' + h[rpm.RPMTAG_LICENSE] + '<br/>\n'
 			html += 'Size: %d<br/>\n' % h[rpm.RPMTAG_SIZE]
 			if h[rpm.RPMTAG_URL]:
 				html += 'URL: <a href="' + h[rpm.RPMTAG_URL] + '">' + h[rpm.RPMTAG_URL] + '</a><br/>\n'
@@ -207,6 +210,7 @@ class Poldek_package:
 			if pkg.epoch:
 				html += 'Epoch: %d<br/>\n' % (pkg.epoch)
 			html += 'Group: ' + pkg.group + '<br/>\n'
+			html += 'License: ' + inf.license + '<br/>\n'
 			html += 'Size: %d<br/>\n' % pkg.size
 			if inf.url:
 				html += 'URL: <a href="' + inf.url + '">' + inf.url + '</a><br/>\n'
